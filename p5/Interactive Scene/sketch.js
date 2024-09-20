@@ -10,6 +10,10 @@ let currentBack = 0
 let currentBackColourR = 28
 let currentBackColourG = 37
 let currentBackColourB = 60
+let currentGrass = 0
+let currentGrassColourR = 38
+let currentGrassColourG = 139
+let currentGrassColourB = 7
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -37,7 +41,6 @@ function draw() {
 
 
 
-  //no constantly updating stars to prevent asthma attacks
 
 
   fill(177, 196, 216);
@@ -55,19 +58,22 @@ function draw() {
   triangle(width * 3 / 4, height / 4, 0, height, width, height / 2);
   triangle(width * 0.9 / 2, height / 6, width / 4, height / 2, width * 3 / 4, height / 2);
 
-  fill(38, 139, 7);
   //draw grass
+  fill(currentGrassColourR, currentGrassColourG, currentGrassColourB);
   ellipse(width / 2, height, width * 3, height * 1.2);
 
   //stick man head
   stroke(0, 0, 0);
   strokeWeight(10);
   fill(0, 0, 0, 0);
-  circle(mouseX, mouseY - height / 15, width * height / 10000);
+  circle(mouseX, mouseY - 75, 90);
 
-  line(mouseX, (mouseY - height / 15) + (width * height / 10000) / 2, mouseX, ((mouseY - height / 15) + (width * height / 10000) / 2) + width * height / 10000);
-  line(mouseX-width * height / 12500, mouseY, mouseX+width * height / 12500, mouseY)
+  line(mouseX, mouseY - 30, mouseX, mouseY + 50);
+  line(mouseX - width * height / 12500, mouseY, mouseX + width * height / 12500, mouseY);
+  line(mouseX, mouseY + 50, mouseX - 50, mouseY + 100);
+  line(mouseX, mouseY + 50, mouseX + 50, mouseY + 100);
 
+  text("Press Middle Mouse Button")
 }
 
 function windowResized() {
@@ -95,15 +101,43 @@ function mousePressed() {
       currentBackColourB = 60
       currentBack = 3
     } else if (currentBack === 3) {
-      currentBackColourR = 60
-      currentBackColourG = 28
-      currentBackColourB = 49
+      currentBackColourR = 28
+      currentBackColourG = 37
+      currentBackColourB = 60
       currentBack = 0
     }
   }
 }
 
 
+function keyPressed() {
+  if (keyCode === 32) {
+    if (currentGrass === 0) {
+      currentGrassColourR = 19
+      currentGrassColourG = 133
+      currentGrassColourB = 16
+      currentGrass = 1
+    } else if (currentGrass === 1) {
+      currentGrassColourR = 17
+      currentGrassColourG = 124
+      currentGrassColourB = 19
+      currentGrass = 2
+
+    } else if (currentGrass === 2) {
+      currentGrassColourR = 19
+      currentGrassColourG = 109
+      currentGrassColourB = 21
+      currentGrass = 3
+    } else if (currentGrass === 3) {
+      currentGrassColourR = 38
+      currentGrassColourG = 139
+      currentGrassColourB = 7
+      currentGrass = 0
+    }
+  }
+
+
+}
 
 /*function starr() {
 
