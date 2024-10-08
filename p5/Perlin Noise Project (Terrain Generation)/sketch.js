@@ -38,7 +38,7 @@ function staircase() {
 
   let noiseLevel = height; // Scale the noise to canvas height
   let noiseInterval = 0.01; // Controls smoothness
-  
+
   let nx = noiseOffset; // Start noise input at the current offset
 
   for (let x = 0; x <= windowWidth; x += rectWidth) {
@@ -46,12 +46,13 @@ function staircase() {
     let rectHeight = noiseLevel * noise(nx);
     totalHeight += rectHeight;
 
-    if (rectHeight > peakY) {
+    if (rectHeight > peakY) { // Checks for highest point and records the coordinates
       peakX = x;
       peakY = rectHeight;
       peakY1 = windowHeight - rectHeight;
     }
 
+    // Colours
     rectR = Math.random() * (130 - 126) + 126;
     rectG = Math.random() * (130 - 126) + 126;
     rectB = Math.random() * (130 - 126) + 126;
@@ -59,32 +60,36 @@ function staircase() {
     fill(rectR, rectG, rectB);
     rect(x, height, rectWidth, -rectHeight);
 
-    nx += noiseInterval;
+     
+    nx += noiseInterval; // Increment noise input
   }
 
-  let avgHeight = totalHeight / rectsAmount;
+  let avgHeight = totalHeight / rectsAmount; // Calculate average
 
+  // Draw the average line
   fill(255, 0, 0, 255);
   noStroke();
   rect(0, windowHeight - avgHeight, windowWidth, 5)
   stroke(1)
+
+  // Draw Flag
   drawFlag(peakX, peakY1);
 }
 
 
 function keyPressed() {
-  if (keyCode === 37) {
-    if (rectWidth === 1) { //
+  if (keyCode === 37) {// Decrease Width
+    if (rectWidth === 1) { // Checks for Current Width to prevent server crashing
     } else {
       rectWidth -= 1;
     }
   }
-  if (keyCode === 39) {
+  if (keyCode === 39) { // Increase Width
     rectWidth += 1;
   }
 }
 
-function drawFlag(x, y) {
+function drawFlag(x, y) {// Draw Flag
   fill(255, 0, 0);
   line(x, y, x, y - 50);
   rect(x, y - 50, 30, 20);
