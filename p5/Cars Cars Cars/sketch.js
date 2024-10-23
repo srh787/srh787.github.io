@@ -36,6 +36,8 @@ function draw() {
   for (let Cars of westbound) {
     Cars.action();
   }
+
+  rect(width/2, height/2 - 300, 40, 40);
 }
 
 function mousePressed() {
@@ -130,7 +132,13 @@ class Cars {
 
 class TrafficLight {
   constructor() {
+    this.state = "green";
+    this.timer = 0;
+  }
 
+  display() {
+    this.fill(this.state === "green"? "green" : "red");
+    rect(width/2, height/2 - 300, 40, 40);
   }
 }
 
