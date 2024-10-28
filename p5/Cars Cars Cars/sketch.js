@@ -11,23 +11,30 @@ let trafficLight;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  let cc;
 
   for (i = 0; i < 20; i++) {
     let y = random(height / 2 + 15, height / 2 + 170);
-    eastbound.push(new Cars(round(random()), random(width), y, 0, round(random(1, 5), 0), color(random(255), random(255), random(255))));
+    cc = color(random(255), random(255), random(255));
+    eastbound.push(new Cars(round(random()), random(width), y, 0, round(random(1, 5), 0), cc));
   }
 
   for (i = 0; i < 20; i++) {
     let y = random(height / 2 - 35, height / 2 - 195);
-    westbound.push(new Cars(round(random()), random(width), y, 1, round(random(-1, -5), 0), color(random(255), random(255), random(255))));
+    cc = color(random(255), random(255), random(255));
+    westbound.push(new Cars(round(random()), random(width), y, 1, round(random(-1, -5), 0), cc));
   }
 
+  trafficLight = new TrafficLight();
 }
 
 function draw() {
+  frameRate(60);
   background(220);
 
   drawRoad();
+
+
 
   for (let Cars of eastbound) {
     Cars.action();
@@ -37,7 +44,10 @@ function draw() {
     Cars.action();
   }
 
-  rect(width/2, height/2 - 300, 40, 40);
+  rect(width / 2, height / 2 - 300, 40, 40);
+
+  trafficLight.update();
+  trafficLight.display();
 }
 
 function mousePressed() {
@@ -50,6 +60,12 @@ function mousePressed() {
       let y = random(height / 2 + 15, height / 2 + 170);
       eastbound.push(new Cars(round(random()), random(width), y, 0, round(random(1, 5), 0), color(random(255), random(255), random(255))));
     }
+  }
+}
+
+function keyPressed() {
+  if (key === ' ') {
+    trafficLight.changeLight();
   }
 }
 
@@ -111,7 +127,8 @@ class Cars {
   }
 
   changeColor() {
-    this.color = color(random(255), random(255), random(255));
+    let cc = color(random(255), random(255), random(255));
+    this.color = cc;
   }
 
   action() {
@@ -132,13 +149,49 @@ class Cars {
 
 class TrafficLight {
   constructor() {
-    this.state = "green";
+    this.state = 0;
     this.timer = 0;
   }
 
   display() {
-    this.fill(this.state === "green"? "green" : "red");
-    rect(width/2, height/2 - 300, 40, 40);
+    if (this.state === 1) {
+      fill(255, 0, 0);
+    } else {
+      fill(0, 255, 0);
+    }
+    rect(width / 2, height / 2 - 300, 40, 40);
+  }
+
+  update() {
+    if (this.state === 1) {
+      this.timer--;
+      for (let vehicle of eastbound) {
+        vehicle.speed = 0;
+      }
+      for (let vehicle of westbound) {
+        vehicle.speed = 0;
+      }
+      if (this.timer <= 0) {
+        this.state = 0;
+      }
+    }
+  }
+
+  stopTraffic() {
+    for (let vehicle of eastbound) {
+      vehicle.speed = 0;
+    }
+    for (let vehicle of westbound) {
+      vehicle.speed = 0;
+    }
+  }
+
+  changeLight() {
+    if (this.state === 0) {
+      this.state = 1;
+      this.timer = 120;
+      this.stopTraffic();
+    }
   }
 }
 
