@@ -11,7 +11,7 @@ const NUM_COLS = 5;
 let rectWidth, rectHeight;
 let currentRow, currentCol;
 
-let gridData = [[0, 0, 0, 255, 0],
+let gridData = [[0, 0, 0, 255, 255],
   [255, 0, 255, 0, 255],
   [0, 255, 0, 0, 0],
   [0, 0, 255, 0, 255]];
@@ -20,6 +20,17 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectWidth = width / NUM_COLS;
   rectHeight = height / NUM_ROWS;
+
+  updateGrid();
+
+}
+
+function updateGrid() {
+  for (let y = 0; y < NUM_ROWS; y++) {
+    for (let x = 0; x < NUM_COLS; x++) {
+      gridData[y][x] = random([0, 255]);
+    }
+  }
 }
 
 function drawGrid() {
@@ -42,7 +53,6 @@ function determineActiveSquare() {
 }
 function mousePressed() {
   if (keyIsPressed && keyCode === SHIFT) {
-
     flip(currentCol, currentRow);//mouse
   }
   else {
@@ -66,16 +76,29 @@ function flip(col, row) {
 }
 
 function winCondition() {
-  for (i in gridData) {
-    if (i === 0) {
-      
+  let firstColour = gridData[0][0];
+  for (let row of gridData) {
+    for (let grid of row) {
+      if (grid !== firstColour) {
+        return false;
+      }
     }
   }
 
+  fill(0, 255, 0);
+  textSize(60);
+  textAlign(CENTER);
+  text("You Win!", width / 2, height / 2);
 }
 
 function draw() {
   background(220);
   determineActiveSquare();
   drawGrid();
+
+  winCondition();
+}
+
+function windowResized() { // Resize window
+  resizeCanvas(windowWidth, windowHeight);
 }
