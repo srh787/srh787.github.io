@@ -10,6 +10,7 @@ const NUM_ROWS = 4;
 const NUM_COLS = 5;
 let rectWidth, rectHeight;
 let currentRow, currentCol;
+let currentFlipPattern = "cross";
 
 let gridData = [[0, 0, 0, 255, 255],
   [255, 0, 255, 0, 255],
@@ -49,18 +50,27 @@ function determineActiveSquare() {
   //where the mouse is!
   currentRow = int(mouseY / rectHeight);
   currentCol = int(mouseX / rectWidth);
-  print(currentCol, currentRow);
 }
+
 function mousePressed() {
   if (keyIsPressed && keyCode === SHIFT) {
     flip(currentCol, currentRow);//mouse
   }
   else {
-    flip(currentCol, currentRow);//mouse
-    flip(currentCol - 1, currentRow);//left
-    flip(currentCol + 1, currentRow);//right
-    flip(currentCol, currentRow - 1);//up
-    flip(currentCol, currentRow + 1);//down
+    if (currentFlipPattern === "cross") {
+      flip(currentCol, currentRow);//mouse
+      flip(currentCol - 1, currentRow);//left
+      flip(currentCol + 1, currentRow);//right
+      flip(currentCol, currentRow - 1);//up
+      flip(currentCol, currentRow + 1);//down
+    }
+    else {
+      for (let y = -1; y < 1; y++) {
+        for (let x = -1; x < 1; x++) {
+          flip(currentCol - y, currentRow - x);
+        }
+      }
+    }
   }
 }
 
@@ -85,18 +95,62 @@ function winCondition() {
     }
   }
 
-  fill(0, 255, 0);
+  fill(255, 0, 0);
   textSize(60);
   textAlign(CENTER);
   text("You Win!", width / 2, height / 2);
 }
 
+function drawOverlay() {
+  fill(100, 255, 100, 150); // Semi-transparent blue
+  strokeWeight(3);
+
+
+  if (currentFlipPattern === "cross") {
+    rect(currentCol * rectWidth, currentRow * rectHeight, rectWidth, rectHeight); // Center
+    if (currentCol > 0) {
+      rect((currentCol - 1) * rectWidth, currentRow * rectHeight, rectWidth, rectHeight);
+    }
+    if (currentCol < NUM_COLS - 1) {
+      rect((currentCol + 1) * rectWidth, currentRow * rectHeight, rectWidth, rectHeight);
+    }
+    if (currentRow > 0) {
+      rect(currentCol * rectWidth, (currentRow - 1) * rectHeight, rectWidth, rectHeight);
+    }
+    if (currentRow < NUM_ROWS - 1) {
+      rect(currentCol * rectWidth, (currentRow + 1) * rectHeight, rectWidth, rectHeight);
+    }
+
+  }
+  else {
+    for (let i = -1; i <= 0; i++) {
+      for (let j = -1; j <= 0; j++) {
+        let newCol = currentCol - i;
+        let newRow = currentRow - j;
+        if (newCol >= 0 && newCol < NUM_COLS && newRow >= 0 && newRow < NUM_ROWS) {
+          rect(newCol * rectWidth, newRow * rectHeight, rectWidth, rectHeight);
+        }
+      }
+    }
+  }
+}
+
+function keyPressed() {
+  if (key === ' ') {
+    currentFlipPattern = currentFlipPattern === "cross" ? "square" : "cross";
+  }
+}
+
 function draw() {
+  //frameRate(5);
   background(220);
   determineActiveSquare();
   drawGrid();
 
   winCondition();
+  drawOverlay();
+
+  console.log(currentFlipPattern);
 }
 
 function windowResized() { // Resize window
