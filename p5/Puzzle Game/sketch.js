@@ -1,7 +1,7 @@
-// Project Title
-// Your Name
-// Date
-//
+// Puzzle Game
+// Steven Huang
+// November 4th, 2024
+// CS30 P3
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
