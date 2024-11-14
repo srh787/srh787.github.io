@@ -67,8 +67,6 @@ function cantor(x, y, len, depth) {
 }
 
 
-
-
 function circleInCircle(x, y, d) {
   print(1);
   if (d > 10) {
