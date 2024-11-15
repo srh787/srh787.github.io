@@ -12,8 +12,9 @@ function setup() {
 }
 function draw() {
   frameRate(1000);
+  randomSeed(1);
 
-  drawTree(width / 4, height * 0.8, 90, 10);
+  drawTree(width / 2, height * 0.8, 90, 6);
 }
 function drawLine(x1, y1, x2, y2, depth) {
   //draw a line segment connecting (x1,y1) to (x2,y2)
@@ -25,15 +26,23 @@ function drawTree(x1, y1, angle, depth) {
     let y2 = y1 - sin(radians(angle)) * depth * scale; //using trig ratios. Get shorter based on depth
     drawLine(x1, y1, x2, y2, depth);
     //for a 2-branch tree:
-    stroke(color(random(0, 255), random(0, 255), random(0, 255)))
-    drawTree(x2, y2, angle - 45, depth - 1);
-    stroke(color(random(0, 255), random(0, 255), random(0, 255)))
-    drawTree(x2, y2, angle - 30, depth - 1);
-    stroke(color(random(0, 255), random(0, 255), random(0, 255)))
-    drawTree(x2, y2, angle - 15, depth - 1);
+
+    stroke(0,0,0);
+    drawTree(x2, y2, angle - 20, depth - 1);
+    drawTree(x2, y2, angle + 20, depth - 1);
+    drawTree(x2, y2, angle, depth - 1);
+
+    if (depth < 4){
+      drawLeaf(x2,y2,depth);
+    }
   }
+
+
+
 }
 
-function drawBalloon(x, y, depth) {
-
+function drawLeaf(x, y, depth) {
+  fill(color(random(0, 255), random(0, 255), random(0, 255)));
+  noStroke();
+  circle(x, y, random(5, 10) * (7 - depth));
 }
