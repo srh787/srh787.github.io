@@ -13,9 +13,9 @@ let currentFlipPattern = "cross";
 
 //Initial Grid Data
 let gridData = [[0, 0, 0, 255, 255],
-  [255, 0, 255, 0, 255],
-  [0, 255, 0, 0, 0],
-  [0, 0, 255, 0, 255]];
+[255, 0, 255, 0, 255],
+[0, 255, 0, 0, 0],
+[0, 0, 255, 0, 255]];
 
 // P5 Setup, initializes canvas and grid structure
 function setup() {
@@ -71,11 +71,10 @@ function mousePressed() {
     }
     else {
       // Square pattern
-      for (let y = -1; y < 1; y++) {
-        for (let x = -1; x < 1; x++) {
-          flip(currentCol - y, currentRow - x);
-        }
-      }
+      flip(currentCol + 1, currentRow + 1);
+      flip(currentCol, currentRow + 1);
+      flip(currentCol + 1, currentRow);
+      flip(currentCol, currentRow);
     }
   }
 }
