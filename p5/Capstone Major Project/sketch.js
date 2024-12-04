@@ -1,4 +1,4 @@
-// Project Title
+// Capstone Major Project
 // Your Name
 // Date
 //
