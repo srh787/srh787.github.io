@@ -1,0 +1,22 @@
+//Child Class - Circle
+
+class CircleObject extends AnimatedObject{
+    constructor(){
+        super(random(width), random(height));
+
+    }
+
+    move(){
+        super.move();
+        
+        if (this.x<0) this.x = width;
+    }
+
+    display(){
+        if(mouseIsPressed) strokeWeight(10);
+        else strokeWeight(2);
+
+        
+    }
+
+}

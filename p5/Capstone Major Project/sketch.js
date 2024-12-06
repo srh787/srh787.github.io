@@ -23,6 +23,8 @@ function windowResized() {
 }
 
 class Planet{
-
+  constructor(r, d, v, ) {
+    
+  }
 
 }
