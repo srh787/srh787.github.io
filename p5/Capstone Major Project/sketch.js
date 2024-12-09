@@ -19,12 +19,4 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-
-}
-
-class Planet{
-  constructor(r, d, v, ) {
-    
-  }
-
 }
