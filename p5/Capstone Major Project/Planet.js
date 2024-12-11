@@ -17,6 +17,5 @@ class Planet {
         let v2 = this.v.cross(this.v1);
         texture(this.texture);
         sphere(this.radius);
-
     }
 }
