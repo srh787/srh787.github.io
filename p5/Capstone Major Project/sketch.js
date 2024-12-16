@@ -23,21 +23,24 @@ function setup() {
   // Disable the context menu on the canvas so the camera can use the right mouse button
   canvas.elt.oncontextmenu = () => false;
 
-  cam = createEasyCam({ distance: 500 });
+  image(bg_space, -width, -height, width*2, height*2);
+  cam = createEasyCam({ distance: 2000 });
 
 
-  //earth = new Planet(200, 0, 0, earth_tex);
-  //earth.spawnMoons(4,1);
+  earth = new Planet(200, 0, 0, earth_tex);
+  earth.spawnMoons(4,1);
+
+  
 }
 
 function draw() {
-  background(220);
-  image(bg_space, -width, -height, width*2, height*2);
+  background(0);
+
 
   ambientLight(255, 255, 255);
   pointLight(255, 255, 255, 0, 0, 0);
-  //earth.show();
-  //earth.orbit();
+  earth.show();
+  earth.orbit();
 }
 
 function windowResized() {
