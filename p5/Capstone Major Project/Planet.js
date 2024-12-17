@@ -15,6 +15,12 @@ class Planet {
         noStroke();
         let v1 = createVector(1,0,1);
         let v2 = this.v.cross(this.v1);
+
+        if (v2.x != 0 || v2.y != 0 || v2.z != 0) {
+            rotate(this.angle, p);
+          }
+
+        fill(255);
         texture(this.texture);
         sphere(this.radius, width/2, height/2);
     }*/
@@ -35,35 +41,16 @@ class Planet {
         this.texture = img;
     }
 
-    orbit() {
-        this.angle = this.angle + this.orbitspeed;
-        if (this.planets !== null) {
-            for (let i = 0; i < this.planets.length; i++) {
-                this.planets[i].orbit();
-            }
-        }
-    }
 
-    spawnMoons(total, level) {
-        this.planets = [];
-        for (let i = 0; i < total; i++) {
-            let r = this.radius / (level * 2);
-            let d = random(this.radius + r, (this.radius + r) * 2);
-            let o = random(-0.1, 0.1);
-            //let index = int(random(0, textures.length));
-            this.planets[i] = new Planet(r, d, o, earth_tex);
-            if (level < 2) {
-                let num = int(random(0, 3));
-                this.planets[i].spawnMoons(num, level + 1);
-            }
-        }
-    }
+
+
 
     show() {
         push();
         noStroke();
         let v2 = createVector(1, 0, 1);
         let p = this.v.cross(v2);
+        
         // Rotation around a 0-length axis doesn't work in p5.js, so don't do that.
         if (p.x !== 0 || p.y !== 0 || p.z !== 0) {
             rotate(this.angle, p);

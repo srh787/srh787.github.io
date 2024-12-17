@@ -19,16 +19,16 @@ function preload() {
 }
 
 function setup() {
-  let canvas = createCanvas(600, 600, WEBGL);
+  let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   // Disable the context menu on the canvas so the camera can use the right mouse button
   canvas.elt.oncontextmenu = () => false;
 
   image(bg_space, -width, -height, width*2, height*2);
-  cam = createEasyCam({ distance: 2000 });
+  cam = createEasyCam({ distance: 1500 });
 
 
   earth = new Planet(200, 0, 0, earth_tex);
-  earth.spawnMoons(4,1);
+  //earth.spawnMoons(4,1);
 
   
 }
@@ -40,7 +40,8 @@ function draw() {
   ambientLight(255, 255, 255);
   pointLight(255, 255, 255, 0, 0, 0);
   earth.show();
-  earth.orbit();
+  //earth.orbit();
+  //Moon.show();
 }
 
 function windowResized() {
