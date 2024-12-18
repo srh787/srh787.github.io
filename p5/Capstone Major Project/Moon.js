@@ -1,7 +1,18 @@
 class Moon extends Planet {
 
-    spawnMoons(total, level) {
+    constructor(r, d, vo, vr, img) {
+        this.v = p5.Vector.random3D();
+
+        this.radius = r;
+        this.ring = d;
+        this.orbitSpeed = vo;
+        this.rotationSpeed = vr;
+
         this.planets = [];
+    }
+
+    spawnMoons(total, level) {
+
         for (let i = 0; i < total; i++) {
             let r = this.radius / (level * 2);
             let d = random(this.radius + r, (this.radius + r) * 2);
@@ -17,11 +28,15 @@ class Moon extends Planet {
 
     orbit() {
         this.angle = this.angle + this.orbitspeed;
-        if (this.planets !== null) {
+        if (this.planets.length === 0) {
             for (let i = 0; i < this.planets.length; i++) {
                 this.planets[i].orbit();
             }
         } 
     }
 
+    show(){
+        super.show();
+
+    }
 }

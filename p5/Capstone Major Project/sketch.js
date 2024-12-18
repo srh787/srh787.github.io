@@ -28,7 +28,7 @@ function setup() {
 
 
   earth = new Planet(200, 0, 0, earth_tex);
-  //earth.spawnMoons(4,1);
+
 
   
 }
@@ -40,8 +40,7 @@ function draw() {
   ambientLight(255, 255, 255);
   pointLight(255, 255, 255, 0, 0, 0);
   earth.show();
-  //earth.orbit();
-  //Moon.show();
+
 }
 
 function windowResized() {
