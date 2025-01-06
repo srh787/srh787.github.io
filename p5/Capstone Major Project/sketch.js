@@ -9,7 +9,7 @@ let bg_space;
 
 let earth_tex;
 let moon_tex;
-let mars_tex;
+//let mars_tex;
 
 let earth;
 
@@ -24,7 +24,7 @@ function setup() {
   canvas.elt.oncontextmenu = () => false;
 
   image(bg_space, -width, -height, width*2, height*2);
-  cam = createEasyCam({ distance: 1500 });
+  cam = createEasyCam({ distance: 1000 });
 
 
   earth = new Planet(200, 0, 0, earth_tex);
