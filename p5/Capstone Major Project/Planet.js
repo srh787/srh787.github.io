@@ -8,7 +8,7 @@ class Planet {
         this.angle = random(TWO_PI);
         this.orbitspeed = o;
 
-        this.moons = []; // Array to hold Moon objects
+        this.moons = []; //arr to hold Moon objects
 
         this.texture = img;
     }
@@ -48,7 +48,7 @@ class Planet {
         sphere(this.radius);
 
         for (let moon of this.moons) {
-            moon.show(this.v); // Pass the planet's position
+            moon.show(this.v); //pass the planet's position
         }
 
         pop();
