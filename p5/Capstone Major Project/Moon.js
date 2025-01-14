@@ -6,7 +6,7 @@ class Moon {
         this.orbitspeed = o;
         this.texture = img;
 
-        this.visible = false; // Visibility flag
+        this.visible = true; // Visibility flag
 
         // Position vector constrained to horizontal axis (XZ plane)
         this.v = createVector(cos(this.angle) * this.distance, 0, sin(this.angle) * this.distance);

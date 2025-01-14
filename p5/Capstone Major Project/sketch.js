@@ -26,14 +26,14 @@ function preload() {
 
 function setup() {
   moonPresets = {
-    mercury: { radius: 100, distance: 800, orbitspeed: 0.03, texture: earth_tex },
-    venus: { radius: 200, distance: 1200, orbitspeed: 0.02, texture: null },
-    mars: { radius: 150, distance: 1500, orbitspeed: 0.02, texture: null },
-    jupiter: { radius: 300, distance: 2000, orbitspeed: 0.01, texture: null },
-    saturn: { radius: 250, distance: 2500, orbitspeed: 0.008, texture: null },
-    uranus: { radius: 220, distance: 3000, orbitspeed: 0.007, texture: null },
-    neptune: { radius: 200, distance: 3500, orbitspeed: 0.006, texture: null },
-    pluto: { radius: 80, distance: 4000, orbitspeed: 0.005, texture: null },
+    mercury: { radius: 20, distance: 160, orbitspeed: 0.03, texture: earth_tex },
+    venus: { radius: 40, distance: 240, orbitspeed: 0.02, texture: earth_tex },
+    mars: { radius: 30, distance: 300, orbitspeed: 0.02, texture: earth_tex },
+    jupiter: { radius: 60, distance: 400, orbitspeed: 0.01, texture: earth_tex },
+    saturn: { radius: 50, distance: 500, orbitspeed: 0.008, texture: earth_tex },
+    uranus: { radius: 44, distance: 600, orbitspeed: 0.007, texture: earth_tex },
+    neptune: { radius: 40, distance: 700, orbitspeed: 0.006, texture: earth_tex },
+    pluto: { radius: 16, distance: 800, orbitspeed: 0.005, texture: earth_tex },
   };
 
   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -47,7 +47,7 @@ function setup() {
 
   cam = createEasyCam({ distance: 1500 });
 
-  earth = new Planet(200, 0, 0, earth_tex);
+  earth = new Planet(100, 0, 0, earth_tex);
 
   for (let moonName in moonPresets) {
     earth.addMoon(moonName);
