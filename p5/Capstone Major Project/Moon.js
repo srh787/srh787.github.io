@@ -1,42 +1,50 @@
-class Moon extends Planet {
-
-    constructor(r, d, vo, vr, img) {
-        this.v = p5.Vector.random3D();
-
+class Moon {
+    constructor(r, d, o, img) {
         this.radius = r;
-        this.ring = d;
-        this.orbitSpeed = vo;
-        this.rotationSpeed = vr;
+        this.distance = d;
+        this.angle = random(TWO_PI);
+        this.orbitspeed = o;
+        this.texture = img;
 
-        this.planets = [];
-    }
+        this.visible = false; // Visibility flag
 
-    spawnMoons(total, level) {
-
-        for (let i = 0; i < total; i++) {
-            let r = this.radius / (level * 2);
-            let d = random(this.radius + r, (this.radius + r) * 2);
-            let o = random(-0.1, 0.1);
-            //let index = int(random(0, textures.length));
-            this.planets[i] = new Planet(r, d, o, earth_tex);
-            if (level < 2) {
-                let num = int(random(0, 3));
-                this.planets[i].spawnMoons(num, level + 1);
-            }
-        }
+        // Position vector constrained to horizontal axis (XZ plane)
+        this.v = createVector(cos(this.angle) * this.distance, 0, sin(this.angle) * this.distance);
     }
 
     orbit() {
-        this.angle = this.angle + this.orbitspeed;
-        if (this.planets.length === 0) {
-            for (let i = 0; i < this.planets.length; i++) {
-                this.planets[i].orbit();
-            }
-        } 
+        if (this.visible) {
+            this.angle += this.orbitspeed;
+
+            // Update position to stay on the horizontal axis (XZ plane)
+            this.v.x = cos(this.angle) * this.distance;
+            this.v.z = sin(this.angle) * this.distance;
+        }
     }
 
-    show(){
-        super.show();
+    show(parentPosition) {
+        if (this.visible) {
+            push();
 
+            // Translate to the moon's position relative to the planet
+            translate(
+                parentPosition.x + this.v.x,
+                parentPosition.y + this.v.y,
+                parentPosition.z + this.v.z
+            );
+
+            noStroke();
+            if (this.texture) {
+                texture(this.texture); // Apply texture if valid
+            } else {
+                fill(255); // Default color if texture is missing
+            }
+            sphere(this.radius);
+            pop();
+        }
+    }
+
+    toggleVisibility(state) {
+        this.visible = state;
     }
 }
