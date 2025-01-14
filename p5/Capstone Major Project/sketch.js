@@ -9,7 +9,7 @@ let bg_space;
 
 let earth_tex;
 let moon_tex;
-let mars_tex;
+//let mars_tex;
 
 let earth;
 
