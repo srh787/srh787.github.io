@@ -62,7 +62,7 @@ function setup() {
 
     // Create a button for each moon
     let button = createButton(`Toggle ${moonName}`);
-    button.position(10, 10 + Object.keys(buttons).length * 30); // Position buttons dynamically
+    button.position(10, 10 + Object.keys(buttons).length * 30); 
     button.mousePressed(() => toggleMoonVisibility(moonName));
     buttons[moonName] = button;
   }
