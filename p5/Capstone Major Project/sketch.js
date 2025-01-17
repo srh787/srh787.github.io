@@ -23,6 +23,10 @@ function preload() {
   venus_tex = loadImage('assets/venus.jpg');
   mars_tex = loadImage('assets/mars.jpg');
   jupiter_tex = loadImage('assets/jupiter.jpg');
+  saturn_tex = loadImage('assets/saturn.jpg');
+  uranus_tex = loadImage('assets/uranus.jpg');
+  neptune_tex = loadImage('assets/neptune.jpg');
+  pluto_tex = loadImage('assets/pluto.jpg');
   bg_space = loadImage('assets/space.jpg');
 }
 
@@ -30,14 +34,14 @@ function preload() {
 
 function setup() {
   moonPresets = {
-    mercury: { radius: 20, distance: 160, orbitspeed: 0.03, texture: mercury_tex },
-    venus: { radius: 40, distance: 240, orbitspeed: 0.02, texture: venus_tex },
-    mars: { radius: 30, distance: 300, orbitspeed: 0.02, texture: mars_tex },
-    jupiter: { radius: 60, distance: 400, orbitspeed: 0.01, texture: jupiter_tex },
-    saturn: { radius: 50, distance: 500, orbitspeed: 0.008, texture: earth_tex },
-    uranus: { radius: 44, distance: 600, orbitspeed: 0.007, texture: earth_tex },
-    neptune: { radius: 40, distance: 700, orbitspeed: 0.006, texture: earth_tex },
-    pluto: { radius: 16, distance: 800, orbitspeed: 0.005, texture: earth_tex },
+    mercury: { radius: 20, distance: 240, orbitspeed: 0.03, texture: mercury_tex },
+    venus: { radius: 40, distance: 360, orbitspeed: 0.02, texture: venus_tex },
+    mars: { radius: 30, distance: 450, orbitspeed: 0.02, texture: mars_tex },
+    jupiter: { radius: 60, distance: 600, orbitspeed: 0.01, texture: jupiter_tex },
+    saturn: { radius: 50, distance: 750, orbitspeed: 0.008, texture: saturn_tex },
+    uranus: { radius: 44, distance: 900, orbitspeed: 0.007, texture: uranus_tex },
+    neptune: { radius: 40, distance: 1050, orbitspeed: 0.006, texture: neptune_tex },
+    pluto: { radius: 16, distance: 1200, orbitspeed: 0.005, texture: pluto_tex }
   };
 
   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -49,7 +53,7 @@ function setup() {
   }
 
 
-  cam = createEasyCam({ distance: 1500 });
+  cam = createEasyCam({ distance: 2000 });
 
   earth = new Planet(100, 0, 0, earth_tex);
 
