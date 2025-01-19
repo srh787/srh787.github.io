@@ -6,94 +6,103 @@
 // - describe what you did to take this project "above and beyond"
 
 let bg_space;
-
 let earth_tex;
-let moon_tex;
-//let mars_tex;
-
 let earth;
-
 let moonPresets;
 let buttons = {};
 let stars = [];
+let resetButton;
 
 function preload() {
-  earth_tex = loadImage('assets/earth.jpg');
-  mercury_tex = loadImage('assets/mercury.jpg');
-  venus_tex = loadImage('assets/venus.jpg');
-  mars_tex = loadImage('assets/mars.jpg');
-  jupiter_tex = loadImage('assets/jupiter.jpg');
-  saturn_tex = loadImage('assets/saturn.jpg');
-  uranus_tex = loadImage('assets/uranus.jpg');
-  neptune_tex = loadImage('assets/neptune.jpg');
-  pluto_tex = loadImage('assets/pluto.jpg');
-  bg_space = loadImage('assets/space.jpg');
+    earth_tex = loadImage('assets/earth.jpg');
+    mercury_tex = loadImage('assets/mercury.jpg');
+    venus_tex = loadImage('assets/venus.jpg');
+    mars_tex = loadImage('assets/mars.jpg');
+    jupiter_tex = loadImage('assets/jupiter.jpg');
+    saturn_tex = loadImage('assets/saturn.jpg');
+    uranus_tex = loadImage('assets/uranus.jpg');
+    neptune_tex = loadImage('assets/neptune.jpg');
+    pluto_tex = loadImage('assets/pluto.jpg');
+    bg_space = loadImage('assets/space.jpg');
 }
-
-
 
 function setup() {
   moonPresets = {
-    mercury: { radius: 20, distance: 240, orbitspeed: 0.03, texture: mercury_tex },
-    venus: { radius: 40, distance: 360, orbitspeed: 0.02, texture: venus_tex },
-    mars: { radius: 30, distance: 450, orbitspeed: 0.02, texture: mars_tex },
-    jupiter: { radius: 60, distance: 600, orbitspeed: 0.01, texture: jupiter_tex },
-    saturn: { radius: 50, distance: 750, orbitspeed: 0.008, texture: saturn_tex },
-    uranus: { radius: 44, distance: 900, orbitspeed: 0.007, texture: uranus_tex },
-    neptune: { radius: 40, distance: 1050, orbitspeed: 0.006, texture: neptune_tex },
-    pluto: { radius: 16, distance: 1200, orbitspeed: 0.005, texture: pluto_tex }
+      mercury: { radius: 10, distance: 120, orbitspeed: 0.03, texture: mercury_tex },
+      venus: { radius: 20, distance: 180, orbitspeed: 0.02, texture: venus_tex },
+      mars: { radius: 15, distance: 225, orbitspeed: 0.02, texture: mars_tex },
+      jupiter: { radius: 30, distance: 300, orbitspeed: 0.01, texture: jupiter_tex },
+      saturn: { radius: 25, distance: 375, orbitspeed: 0.008, texture: saturn_tex },
+      uranus: { radius: 22, distance: 450, orbitspeed: 0.007, texture: uranus_tex },
+      neptune: { radius: 20, distance: 525, orbitspeed: 0.006, texture: neptune_tex },
+      pluto: { radius: 8, distance: 600, orbitspeed: 0.005, texture: pluto_tex }
   };
 
   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-
   canvas.elt.oncontextmenu = () => false;
 
   for (let i = 0; i < 300; i++) {
-    stars.push(new Star());
+      stars.push(new Star());
   }
 
-
-  cam = createEasyCam({ distance: 2000 });
-
-  earth = new Planet(100, 0, 0, earth_tex);
+  cam = createEasyCam({ distance: 750 });
+  earth = new Planet(50, 0, 0, earth_tex);
 
   for (let moonName in moonPresets) {
-    earth.addMoon(moonName);
-
-    // Create a button for each moon
-    let button = createButton(`Toggle ${moonName}`);
-    button.position(10, 10 + Object.keys(buttons).length * 30); // Position buttons dynamically
-    button.mousePressed(() => toggleMoonVisibility(moonName));
-    buttons[moonName] = button;
+      earth.addMoon(moonName);
+      let button = createButton(`Toggle ${moonName}`);
+      button.position(10, 10 + Object.keys(buttons).length * 30);
+      button.mousePressed(() => toggleMoonVisibility(moonName));
+      buttons[moonName] = button;
   }
 
-  earth.moons[0].toggleVisibility(true);
+  resetButton = createButton("Reset Camera");
+  resetButton.position(10, 10 + Object.keys(buttons).length * 30 + 50);
+  resetButton.mousePressed(resetCamera);
 }
-
 function draw() {
-  background(0);
+    background(0);
 
-  for (let star of stars) {
-    star.show();
-  }
+    for (let star of stars) {
+        star.show();
+    }
 
-  ambientLight(255, 255, 255);
-  pointLight(255, 255, 255, 0, 0, 0);
+    ambientLight(255, 255, 255);
+    pointLight(255, 255, 255, 0, 0, 0);
 
-  earth.orbit();
-  earth.show();
+    earth.orbit();
+    earth.show();
 
+    for (let animation of toggleAnimations) {
+        animation.update();
+        animation.show();
+    }
 
+    toggleAnimations = toggleAnimations.filter(animation => !animation.isFinished());
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 function toggleMoonVisibility(moonName) {
-  let moonIndex = Object.keys(moonPresets).indexOf(moonName);
-  if (moonIndex >= 0) {
-    let moon = earth.moons[moonIndex];
-    moon.toggleVisibility(!moon.visible); // Toggle visibility
-  }
+    let moonIndex = Object.keys(moonPresets).indexOf(moonName);
+    if (moonIndex >= 0) {
+        let moon = earth.moons[moonIndex];
+        if (moon.visible) {
+            moon.toggleVisibility(false);
+        } else {
+            moon.toggleVisibility(true);
+        }
+        toggleAnimation(moon.absolutePosition);
+    }
+}
+
+function resetCamera() {
+    cam.setState({
+        distance: 750,
+        center: [0, 0, 0],
+        rotation: [1, 0, 0, 0],
+        eye: [0, 0, 750],
+    });
 }

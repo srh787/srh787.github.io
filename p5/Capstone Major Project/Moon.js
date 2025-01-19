@@ -1,28 +1,26 @@
 class Moon {
-    constructor(r, d, o, img) {
+    constructor(r, d, o, img, planetPosition) {
         this.radius = r;
         this.distance = d;
-        this.angle = random(TWO_PI);
+        this.angle = random(360);
         this.orbitspeed = o;
         this.texture = img;
         this.visible = true;
-
-        this.v = createVector(cos(this.angle) * this.distance, 0, sin(this.angle) * this.distance);
-        this.particles = []; // Array to hold emitted particles
+        this.planetPosition = planetPosition;
+        this.particles = [];
     }
 
     orbit() {
         if (this.visible) {
             this.angle += this.orbitspeed;
-
-            // Update position to stay on the horizontal axis (XZ plane)
-            this.v.x = cos(this.angle) * this.distance;
-            this.v.z = sin(this.angle) * this.distance;
-
-            // Emit a new particle at the moon's current position
-            this.particles.push(new Particle(this.v.x, this.v.y, this.v.z, 100));
-
-            // Update particles and remove those that are "dead"
+            const x = cos(this.angle) * this.distance;
+            const z = sin(this.angle) * this.distance;
+            this.absolutePosition = createVector(
+                this.planetPosition.x + x,
+                this.planetPosition.y,
+                this.planetPosition.z + z
+            );
+            this.particles.push(new Particle(this.absolutePosition.x, this.absolutePosition.y, this.absolutePosition.z, 80));
             this.particles = this.particles.filter(particle => {
                 particle.update();
                 return !particle.isDead();
@@ -30,24 +28,19 @@ class Moon {
         }
     }
 
-    show(parentPosition) {
+    show() {
         if (this.visible) {
-            // Draw orbit ring
             push();
-            translate(parentPosition.x, parentPosition.y, parentPosition.z);
+            translate(this.planetPosition.x, this.planetPosition.y, this.planetPosition.z);
             noFill();
-            stroke(150);
-            rotateX(HALF_PI); // Rotate the plane to align the orbit ring horizontally
-            ellipse(0, 0, this.distance * 2, this.distance * 2); // Orbit ring on XZ plane
+            stroke(100, 150);
+            strokeWeight(1.5);
+            rotateX(HALF_PI);
+            ellipse(0, 0, this.distance * 2, this.distance * 2);
             pop();
 
-            // Draw moon
             push();
-            translate(
-                parentPosition.x + this.v.x,
-                parentPosition.y + this.v.y,
-                parentPosition.z + this.v.z
-            );
+            translate(this.absolutePosition.x, this.absolutePosition.y, this.absolutePosition.z);
             noStroke();
             if (this.texture) {
                 texture(this.texture);
@@ -57,10 +50,8 @@ class Moon {
             sphere(this.radius);
             pop();
 
-            // Render particles
             for (let particle of this.particles) {
                 push();
-                translate(parentPosition.x, parentPosition.y, parentPosition.z);
                 particle.show();
                 pop();
             }
@@ -75,12 +66,12 @@ class Moon {
 class Particle {
     constructor(x, y, z, lifespan) {
         this.position = createVector(x, y, z);
-        this.lifespan = lifespan; // Lifespan of the particle
-        this.size = random(8, 12); // Increase particle size for better visibility
+        this.lifespan = lifespan;
+        this.size = random(6, 10);
     }
 
     update() {
-        this.lifespan -= 3; // Decrease lifespan (adjust to control fade-out speed)
+        this.lifespan -= 2;
     }
 
     show() {
@@ -88,46 +79,13 @@ class Particle {
             push();
             translate(this.position.x, this.position.y, this.position.z);
             noStroke();
-            fill(170, 160, 255, this.lifespan*2); // Bright reddish-white color with fade effect
-            sphere(this.size); // Draw particle as a larger sphere
+            fill(200, 150, 255, this.lifespan * 2);
+            sphere(this.size);
             pop();
         }
     }
 
     isDead() {
-        return this.lifespan <= 0; // Check if particle should disappear
-    }
-}
-
-class OrbitRing {
-    constructor(distance) {
-        this.distance = distance;
-        this.particles = [];
-
-        // Generate particles along the orbit
-        for (let i = 0; i < 100; i++) {
-            let angle = (TWO_PI / 100) * i;
-            let x = cos(angle) * this.distance;
-            let z = sin(angle) * this.distance;
-            this.particles.push(new Particle(x, 0, z, 0.01));
-        }
-    }
-
-    update() {
-        for (let particle of this.particles) {
-            particle.update(0, this.distance);
-        }
-    }
-
-    show() {
-        // Draw the orbit ring
-        noFill();
-        stroke(100);
-        ellipse(0, 0, this.distance * 2, this.distance * 2);
-
-        // Render particles
-        for (let particle of this.particles) {
-            particle.show();
-        }
+        return this.lifespan <= 0;
     }
 }
