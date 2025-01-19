@@ -45,7 +45,7 @@ function setup() {
       stars.push(new Star());
   }
 
-  cam = createEasyCam({ distance: 750 });
+  cam = createEasyCam({ distance: 1000 });
   earth = new Planet(50, 0, 0, earth_tex);
 
   for (let moonName in moonPresets) {
@@ -100,7 +100,7 @@ function toggleMoonVisibility(moonName) {
 
 function resetCamera() {
     cam.setState({
-        distance: 750,
+        distance: 1000,
         center: [0, 0, 0],
         rotation: [1, 0, 0, 0],
         eye: [0, 0, 750],
