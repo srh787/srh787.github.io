@@ -1,9 +1,6 @@
 // Capstone Major Project
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// 
+// 
 
 let bg_space;
 let earth_tex;
