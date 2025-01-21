@@ -26,6 +26,8 @@ function preload() {
   bg_space = loadImage('assets/space.jpg');
 }
 
+let sliders = {};
+
 function setup() {
   moonPresets = {
     mercury: { radius: 10, distance: 120, orbitspeed: 0.03, texture: mercury_tex },
@@ -48,18 +50,39 @@ function setup() {
   cam = createEasyCam({ distance: 1000 });
   earth = new Planet(50, 0, 0, earth_tex);
 
+  let yOffset = 10;
   for (let moonName in moonPresets) {
     earth.addMoon(moonName);
+
+    // Create toggle button
     let button = createButton(`Toggle ${moonName}`);
-    button.position(10, 10 + Object.keys(buttons).length * 30);
+    button.position(10, yOffset);
     button.mousePressed(() => toggleMoonVisibility(moonName));
     buttons[moonName] = button;
+
+    // Create slider for orbit speed
+    let slider = createSlider(0.001, 0.2, moonPresets[moonName].orbitspeed, 0.001);
+    slider.position(150, yOffset);
+    slider.input(() => updateMoonSpeed(moonName, slider.value()));
+    sliders[moonName] = slider;
+
+    yOffset += 40; // Adjust vertical spacing for the next controls
   }
 
   resetButton = createButton("Reset Camera");
-  resetButton.position(10, 10 + Object.keys(buttons).length * 30 + 50);
+  resetButton.position(10, yOffset + 20);
   resetButton.mousePressed(resetCamera);
+
+  resetCamera();
 }
+
+function updateMoonSpeed(moonName, speed) {
+  let moonIndex = Object.keys(moonPresets).indexOf(moonName);
+  if (moonIndex >= 0) {
+    earth.moons[moonIndex].orbitspeed = speed;
+  }
+}
+
 function draw() {
   background(0);
 
@@ -101,9 +124,9 @@ function toggleMoonVisibility(moonName) {
 
 function resetCamera() {
   cam.setState({
-    distance: 1000,
-    center: [0, 0, 0],
-    rotation: [1, 0, 0, 0],
-    eye: [0, 0, 750],
+    distance: 1000, // Default distance from the center
+    center: [0, 0, 0], // Focus on the center of the scene
+    rotation: [-1.5, 0.35, -0.15, 0.05], // Slightly tilted rotation (quaternion)
+    eye: [500, 300, 750], // Position of the camera eye
   });
 }
