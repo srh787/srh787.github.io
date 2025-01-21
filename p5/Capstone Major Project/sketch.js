@@ -61,7 +61,7 @@ function setup() {
     buttons[moonName] = button;
 
     // Create slider for orbit speed
-    let slider = createSlider(0.001, 0.2, moonPresets[moonName].orbitspeed, 0.001);
+    let slider = createSlider(0.001, 0.1, moonPresets[moonName].orbitspeed, 0.001);
     slider.position(150, yOffset);
     slider.input(() => updateMoonSpeed(moonName, slider.value()));
     sliders[moonName] = slider;
